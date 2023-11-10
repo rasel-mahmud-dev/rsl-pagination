@@ -1,0 +1,25 @@
+0 silly argv {
+0 silly argv   _: [ 'publish' ],
+0 silly argv   composed: 'publish',
+0 silly argv   lernaVersion: '7.4.2',
+0 silly argv   '$0': 'node_modules/.bin/lerna'
+0 silly argv }
+1 notice cli v7.4.2
+2 verbose packageConfigs Resolving packages based on package.json "workspaces" configuration.
+3 verbose rootPath /home/rasel/Desktop/llllllllll/getting-started-example
+4 error Error: EndOfFileExpected in /home/rasel/Desktop/llllllllll/getting-started-example/packages/rs-pagination/package.json at 55:2
+4 error   53 |   "homepage": "https://github.com/rasel-mahmud-dev/react-responsive-table",
+4 error   54 |   "license": "MIT"
+4 error > 55 | },
+4 error      |  ^
+4 error   56 |
+4 error
+4 error     at parseJson (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/src/utils/json.js:25:15)
+4 error     at readJsonFile (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/src/utils/fileutils.js:22:37)
+4 error     at createNodeFromPackageJson (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/plugins/package-json-workspaces.js:26:47)
+4 error     at createNodes (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/plugins/package-json-workspaces.js:20:20)
+4 error     at buildProjectsConfigurationsFromProjectPathsAndPlugins (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/src/project-graph/utils/project-configuration-utils.js:68:88)
+4 error     at createProjectConfigurations (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js:131:129)
+4 error     at WorkspaceContext.<anonymous> (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js:82:39)
+4 error     at getProjectConfigurationsFromContext (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/src/utils/workspace-context.js:26:29)
+4 error     at _retrieveProjectConfigurations (/home/rasel/Desktop/llllllllll/getting-started-example/node_modules/nx/src/project-graph/utils/retrieve-workspace-files.js:81:72)

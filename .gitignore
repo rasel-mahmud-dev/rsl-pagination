@@ -1,0 +1,13 @@
+node_modules
+dist
+.idea
+
+.cache
+packages/remixapp/build
+packages/remixapp/public/build
+.env
+
+packages/header/node_modules
+rsl-pagination/node_modules
+example/node_modules
+rsl-pagination/node_modulesgit
