@@ -99,17 +99,20 @@ export default function Index() {
     );
 }
 ```
+
 ### JSON Data file
+
 [data.json](https://raw.githubusercontent.com/rasel-mahmud-dev/rsl-pagination/main/example/src/data.json)
 
 Check Example [Live example]
 
 ## Params
 
-| Name          | Type   | Default | Description                                |
-|---------------|--------|---------|--------------------------------------------|
-| `className`   | String | ""      | **Optional.** apply class in  root element |
-| `currentPage` | number | false   | **Required.** current page number          |
-| `pageSize`    | number | 5       | **Optional.**                              |
-| `totalItems`  | number | 0       | **Required.**  Total items                 |
+| Name          | Type                                                                 | Default | Description                                |
+|---------------|----------------------------------------------------------------------|---------|--------------------------------------------|
+| `className`   | String                                                               | ""      | **Optional.** apply class in  root element |
+| `currentPage` | number                                                               | false   | **Required.** current page number          |
+| `pageSize`    | number                                                               | 5       | **Optional.**                              |
+| `totalItems`  | number                                                               | 0       | **Required.**  Total items                 |
+| `onChange`    | onChange: (arg: { currentPage: number, perPageRow: number }) => void |         | **Required.**                              | 
 
