@@ -18,22 +18,33 @@ function range(len: number, cb: (i: number) => void) {
     }
 }
 
+
+function rangeNegative(len: number, cb: (i: number) => void) {
+    for (let i = len; i > 0; i--) {
+        cb(i)
+    }
+}
+
 interface StateType {
     perPageRow: number,
     currentPage: number,
     showPageItems: number[]
     showNumberOfItem: number
+    displayPageBtn: number
+    totalPage: number
 }
 
 const Pagination: FC<PaginationProps> = (props) => {
 
-    const {perPageRow = 20, className= "", currentPage = 1, totalItem = 0, onChange} = props
+    const {perPageRow = 20, className = "", currentPage = 1, totalItem = 0, onChange} = props
 
     const [state, setState] = useState<StateType>({
         perPageRow: 0,
         currentPage: 1,
         showPageItems: [],
-        showNumberOfItem: 1
+        showNumberOfItem: 1,
+        displayPageBtn: 10,
+        totalPage: 0
     })
 
 
@@ -54,83 +65,165 @@ const Pagination: FC<PaginationProps> = (props) => {
     function calcPaginationView(totalItem: number, perPageRow: number) {
         let arr: number[] = []
         let showNumberOfItem = Math.ceil(totalItem / perPageRow)
-        let pageView = showNumberOfItem >= 5 ? 5 : showNumberOfItem
-        range(pageView, (i) => {
+        // let pageView = showNumberOfItem >= 5 ? 5 : showNumberOfItem
+        range(state.displayPageBtn, (i) => {
             arr.push(i + 1)
         })
+
         setState(prev => ({
             ...prev,
             showPageItems: arr,
-            showNumberOfItem: pageView
+            totalPage: Math.round(totalItem / state.perPageRow),
+            showNumberOfItem: state.displayPageBtn
         }))
     }
 
+    function getLastItem(arr) {
+        return arr[arr.length - 1]
+    }
+
+    function jumpLastPage(totalPage: number, displayPageBtn: number) {
+        const showPageItems = []
+        rangeNegative(displayPageBtn, (i) => {
+            showPageItems.push(totalPage - (i - 1))
+        })
+        showPageItems.sort()
+        return showPageItems
+    }
 
     function changePage(pageNumber: number) {
 
         let showNumberOfItem = state.showNumberOfItem
+        let showNumberOfPage = state.displayPageBtn
 
         setState(prev => {
             let updatedPaginationState = {...prev}
+            let displayPageBtn = updatedPaginationState.displayPageBtn
+            let totalPage = updatedPaginationState.totalPage
 
-            const isFirstClick = updatedPaginationState.showPageItems[0] === pageNumber
-            const isLastElClick = updatedPaginationState.showPageItems[updatedPaginationState.showPageItems.length] === pageNumber
-
-            const maxLimitPage = Math.ceil(totalItem / updatedPaginationState.perPageRow)
-
-
-            if (isLastElClick) {
-                if (maxLimitPage < pageNumber + showNumberOfItem) {
-                    updatedPaginationState.showPageItems = []
-                    range(showNumberOfItem, (i) => {
-                        updatedPaginationState.showPageItems.push(maxLimitPage - i)
-                    })
-                    updatedPaginationState.showPageItems.reverse()
-                } else {
-                    updatedPaginationState.showPageItems = []
-                    range(showNumberOfItem, (i) => {
-                        updatedPaginationState.showPageItems.push(pageNumber + i)
-                    })
-                }
-
-                if (pageNumber >= maxLimitPage) {
-                    updatedPaginationState.currentPage = maxLimitPage
-                } else {
-                    updatedPaginationState.currentPage = pageNumber
-                }
-
-
-            } else if (isFirstClick) {
-
-                // start from previous 5 from currentPage
-                if (pageNumber - showNumberOfItem >= 1) {
-                    updatedPaginationState.showPageItems = []
-                    range(showNumberOfItem, (i) => {
-                        updatedPaginationState.showPageItems.push(pageNumber - i)
-                    })
-                    updatedPaginationState.showPageItems.reverse()
-                    updatedPaginationState.currentPage = pageNumber
-                } else {
-                    // start from 1
-                    updatedPaginationState.showPageItems = []
-                    range(showNumberOfItem, (i) => {
-                        updatedPaginationState.showPageItems.push(i + 1)
-                    })
-                    updatedPaginationState.currentPage = 1
-                }
-            } else {
-                // change page number for all case.
-
-                if (pageNumber >= maxLimitPage) {
-                    updatedPaginationState.currentPage = maxLimitPage
-                } else {
-                    updatedPaginationState.currentPage = pageNumber
+            if (pageNumber === totalPage) {
+                return {
+                    ...updatedPaginationState,
+                    currentPage: pageNumber,
+                    showPageItems: jumpLastPage(totalPage, displayPageBtn)
                 }
             }
 
+            let lastNoOfCurrentShowPageBtn = getLastItem(updatedPaginationState.showPageItems)
+            const isFirst = pageNumber === 1
+            const isLastPage = pageNumber === lastNoOfCurrentShowPageBtn
 
-            onChange(updatedPaginationState)
+
+            if (isFirst) {
+                updatedPaginationState.showPageItems = []
+                range(displayPageBtn, (i) => {
+                    updatedPaginationState.showPageItems.push(i + 1)
+                })
+                updatedPaginationState.currentPage = 1
+
+
+
+
+            } else if (isLastPage) {
+
+                updatedPaginationState.showPageItems = []
+
+                let remain = totalPage - (displayPageBtn + lastNoOfCurrentShowPageBtn)
+                let low = Math.abs(remain) + lastNoOfCurrentShowPageBtn
+                let high = displayPageBtn - Math.abs(remain)
+                if (remain < 0) {
+                    rangeNegative(Math.abs(remain), (i) => {
+                        let nextPageBtnNo = lastNoOfCurrentShowPageBtn - (i - 1)
+                        updatedPaginationState.showPageItems.push(nextPageBtnNo)
+                    })
+
+
+                    if (high) {
+                        range(high, (i) => {
+                            let nextPageBtnNo = lastNoOfCurrentShowPageBtn + (i + 1)
+                            updatedPaginationState.showPageItems.push(nextPageBtnNo)
+                        })
+                    }
+
+
+                } else {
+                    range(displayPageBtn, (i) => {
+                        let nextPageBtnNo = lastNoOfCurrentShowPageBtn + (i)
+                        if (nextPageBtnNo <= totalPage) {
+                            updatedPaginationState.showPageItems.push(nextPageBtnNo)
+                        }
+                    })
+                }
+                // updatedPaginationState.showPageItems
+                updatedPaginationState.currentPage = lastNoOfCurrentShowPageBtn
+
+            } else {
+                updatedPaginationState.currentPage = pageNumber
+            }
+
             return updatedPaginationState
+
+
+            // const isFirstClick = updatedPaginationState.showPageItems[0] === pageNumber
+            // const isLastElClick = updatedPaginationState.showPageItems.length === pageNumber
+            //
+            // const maxLimitPage = updatedPaginationState.totalPage
+            //
+            //
+            // if (isLastElClick) {
+            //     let lastEl = getLastItem( updatedPaginationState.showPageItems)
+            //
+            //     if (maxLimitPage < pageNumber + showNumberOfPage) {
+            //         updatedPaginationState.showPageItems = []
+            //         range(showNumberOfPage, (i) => {
+            //             updatedPaginationState.showPageItems.push(lastEl  + (i + 1))
+            //         })
+            //         updatedPaginationState.showPageItems.reverse()
+            //     } else {
+            //         updatedPaginationState.showPageItems = []
+            //         range(showNumberOfItem, (i) => {
+            //             updatedPaginationState.showPageItems.push(lastEl  + i)
+            //         })
+            //     }
+            //
+            //     if (pageNumber >= maxLimitPage) {
+            //         updatedPaginationState.currentPage = maxLimitPage
+            //     } else {
+            //         updatedPaginationState.currentPage = pageNumber
+            //     }
+            //
+            //
+            // } else if (isFirstClick) {
+            //
+            //     // start from previous 5 from currentPage
+            //     if (pageNumber - showNumberOfItem >= 1) {
+            //         updatedPaginationState.showPageItems = []
+            //         range(showNumberOfItem, (i) => {
+            //             updatedPaginationState.showPageItems.push(pageNumber - i)
+            //         })
+            //         updatedPaginationState.showPageItems.reverse()
+            //         updatedPaginationState.currentPage = pageNumber
+            //     } else {
+            //         // start from 1
+            //         updatedPaginationState.showPageItems = []
+            //         range(showNumberOfItem, (i) => {
+            //             updatedPaginationState.showPageItems.push(i + 1)
+            //         })
+            //         updatedPaginationState.currentPage = 1
+            //     }
+            // } else {
+            //     // change page number for all case.
+            //
+            //     if (pageNumber >= maxLimitPage) {
+            //         updatedPaginationState.currentPage = maxLimitPage
+            //     } else {
+            //         updatedPaginationState.currentPage = pageNumber
+            //     }
+            // }
+            //
+            //
+            // onChange(updatedPaginationState)
+            // return updatedPaginationState
 
         })
     }
@@ -169,7 +262,7 @@ const Pagination: FC<PaginationProps> = (props) => {
             {/*</div> }*/}
 
             <div className="column-gap-2">
-                <span className="pagination-end-start-button" onClick={()=>changePage(1)}>Start</span>
+                <span className="pagination-end-start-button" onClick={() => changePage(1)}>Start</span>
                 <span>|</span>
             </div>
 
@@ -187,7 +280,7 @@ const Pagination: FC<PaginationProps> = (props) => {
                              className={`pagination-item ${pageNumber === state.currentPage ? "active" : ""}`}>
                             {pageNumber}
                         </div>
-                    )): (
+                    )) : (
                         <div
                             className={`pagination-item no-page`}>
                             No page
@@ -203,17 +296,17 @@ const Pagination: FC<PaginationProps> = (props) => {
                 </button>
             </div>
 
-
             <div>
                 <span>|</span>
-                <span className="pagination-end-start-button" onClick={()=>changePage(Number(state.showPageItems.length))}>End</span>
+                <span className="pagination-end-start-button"
+                      onClick={() => changePage(Number(state.totalPage))}>End</span>
             </div>
 
             <div className="page-of">
                 <span>Page</span>
                 <span>{currentPage}</span>
                 <span>of</span>
-                <span>{state.showPageItems.length}</span>
+                <span>{state.totalPage}</span>
             </div>
         </div>
     );

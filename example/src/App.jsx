@@ -1,6 +1,11 @@
 import {useEffect, useState} from "react";
-import RsPagination from 'rsl-pagination';
-import "rsl-pagination/dist/index.css"
+// import RsPagination from 'rsl-pagination';
+// import "rsl-pagination/dist/index.css"
+
+import RsPagination from 'rsl-pagination/src/RsPagination';
+import "rsl-pagination/src/style.scss"
+
+
 
 import data from "./data.json"
 
@@ -48,17 +53,19 @@ export default function Index() {
         <>
             <div>
 
-                <h1>Rs Pagination</h1>
+                <h1>Rs Pagination {data.length}</h1>
 
                 <table>
                     <tr>
+                        <th>SL</th>
                         <th>User ID</th>
                         <th>ID</th>
                         <th>Title</th>
                         <th>Body</th>
                     </tr>
-                    {items?.items?.map(item => (
+                    {items?.items?.map((item, i) => (
                         <tr key={item.id}>
+                            <td>{(i + 1) + (state.pageSize * (state.page - 1))}</td>
                             <td>{item.id}</td>
                             <td>{item.userId}</td>
                             <td>{item.title}</td>
