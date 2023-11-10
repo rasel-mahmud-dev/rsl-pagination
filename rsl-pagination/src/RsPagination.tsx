@@ -91,6 +91,53 @@ const Pagination: FC<PaginationProps> = (props) => {
         return showPageItems
     }
 
+    function handleNext(pageNumber: number) {
+        setState(prev => {
+            let up = {...prev}
+
+            let displayPageBtn = up.displayPageBtn
+            let totalPage = up.totalPage
+            let currentPage = up.currentPage
+            let lastItem = getLastItem(prev.showPageItems)
+            let endOfList = lastItem === pageNumber
+            if(endOfList){
+                up.showPageItems = []
+
+                let remain = totalPage - (displayPageBtn + lastItem)
+                let low = Math.abs(remain) + lastItem
+                let high = displayPageBtn - Math.abs(remain)
+                if (remain < 0) {
+                    rangeNegative(Math.abs(remain), (i) => {
+                        let nextPageBtnNo = lastItem - (i - 1)
+                        up.showPageItems.push(nextPageBtnNo)
+                    })
+
+                    if (high) {
+                        range(high, (i) => {
+                            let nextPageBtnNo = lastItem + (i + 1)
+                            up.showPageItems.push(nextPageBtnNo)
+                        })
+                    }
+
+                } else {
+                    range(displayPageBtn, (i) => {
+                        let nextPageBtnNo = lastItem + (i)
+                        if (nextPageBtnNo <= totalPage) {
+                            up.showPageItems.push(nextPageBtnNo)
+                        }
+                    })
+                }
+
+
+                // up.showPageItems
+                up.currentPage = lastItem
+            } else {
+                up.currentPage = pageNumber
+            }
+            return up
+        })
+    }
+
     function changePage(pageNumber: number) {
 
         let showNumberOfItem = state.showNumberOfItem
@@ -100,6 +147,7 @@ const Pagination: FC<PaginationProps> = (props) => {
             let updatedPaginationState = {...prev}
             let displayPageBtn = updatedPaginationState.displayPageBtn
             let totalPage = updatedPaginationState.totalPage
+            let currentPage = updatedPaginationState.currentPage
 
             if (pageNumber === totalPage) {
                 return {
@@ -110,8 +158,12 @@ const Pagination: FC<PaginationProps> = (props) => {
             }
 
             let lastNoOfCurrentShowPageBtn = getLastItem(updatedPaginationState.showPageItems)
+            let firstNoOfCurrentShowPageBtn = updatedPaginationState.showPageItems[0]
             const isFirst = pageNumber === 1
             const isLastPage = pageNumber === lastNoOfCurrentShowPageBtn
+            const isHasBeforePage = pageNumber < lastNoOfCurrentShowPageBtn && totalPage - pageNumber
+
+            // console.log(pageNumber > lastNoOfCurrentShowPageBtn, firstNoOfCurrentShowPageBtn < pageNumber)
 
 
             if (isFirst) {
@@ -120,11 +172,24 @@ const Pagination: FC<PaginationProps> = (props) => {
                     updatedPaginationState.showPageItems.push(i + 1)
                 })
                 updatedPaginationState.currentPage = 1
+            } else if (!isFirst && isHasBeforePage) {
+                let low = (pageNumber - displayPageBtn)
+                if (low > 0) {
+                    updatedPaginationState.showPageItems = []
+                    rangeNegative(displayPageBtn, (i) => {
+                        updatedPaginationState.showPageItems.push(pageNumber - (i - 1))
+                    })
 
-
-
+                } else {
+                    updatedPaginationState.showPageItems = []
+                    range(displayPageBtn, (i) => {
+                        updatedPaginationState.showPageItems.push(i + 1)
+                    })
+                }
+                updatedPaginationState.currentPage = pageNumber
 
             } else if (isLastPage) {
+
 
                 updatedPaginationState.showPageItems = []
 
@@ -137,14 +202,12 @@ const Pagination: FC<PaginationProps> = (props) => {
                         updatedPaginationState.showPageItems.push(nextPageBtnNo)
                     })
 
-
                     if (high) {
                         range(high, (i) => {
                             let nextPageBtnNo = lastNoOfCurrentShowPageBtn + (i + 1)
                             updatedPaginationState.showPageItems.push(nextPageBtnNo)
                         })
                     }
-
 
                 } else {
                     range(displayPageBtn, (i) => {
@@ -154,22 +217,41 @@ const Pagination: FC<PaginationProps> = (props) => {
                         }
                     })
                 }
+
+
                 // updatedPaginationState.showPageItems
                 updatedPaginationState.currentPage = lastNoOfCurrentShowPageBtn
 
             } else {
+
+                // updatedPaginationState.showPageItems = []
+                // range(displayPageBtn, (i) => {
+                //     let nextPageBtnNo = pageNumber + i
+                //     updatedPaginationState.showPageItems.push(nextPageBtnNo)
+                // })
                 updatedPaginationState.currentPage = pageNumber
             }
 
+
+            console.log(
+                "isFirst:", isFirst,
+                " isLastPage:", isLastPage,
+                "isHasBeforePage:", isHasBeforePage,
+                "currentPage:", currentPage,
+                "lastNoOfCurrentShowPageBtn:", lastNoOfCurrentShowPageBtn,
+                "s:", updatedPaginationState.showPageItems,
+            )
+
+
+            if (pageNumber > 10) {
+                // return prev
+            }
             return updatedPaginationState
 
 
             // const isFirstClick = updatedPaginationState.showPageItems[0] === pageNumber
             // const isLastElClick = updatedPaginationState.showPageItems.length === pageNumber
-            //
             // const maxLimitPage = updatedPaginationState.totalPage
-            //
-            //
             // if (isLastElClick) {
             //     let lastEl = getLastItem( updatedPaginationState.showPageItems)
             //
@@ -227,6 +309,8 @@ const Pagination: FC<PaginationProps> = (props) => {
 
         })
     }
+
+    console.log(state)
 
 
     function handleChangePerPage(perPageRow: string) {
@@ -289,8 +373,8 @@ const Pagination: FC<PaginationProps> = (props) => {
                 </div>
 
                 <button
-                    className={`paginationArrow ${(state.currentPage === state.showPageItems[state.showPageItems.length - 1] || !state.showPageItems.length) ? "disable-paginationArrow" : ""}`}
-                    onClick={() => changePage(Number(state.currentPage + 1))}>
+                    className={`paginationArrow ${(state.currentPage === state.totalPage) ? "disable-paginationArrow" : ""}`}
+                    onClick={() => handleNext(Number(state.currentPage + 1))}>
                     <span>Next</span>
                     <VscChevronRight/>
                 </button>
@@ -299,7 +383,7 @@ const Pagination: FC<PaginationProps> = (props) => {
             <div>
                 <span>|</span>
                 <span className="pagination-end-start-button"
-                      onClick={() => changePage(Number(state.totalPage))}>End</span>
+                      onClick={() => changePage(state.totalPage)}>End</span>
             </div>
 
             <div className="page-of">
