@@ -1,0 +1,56 @@
+{
+  "name": "rsl-pagination",
+  "version": "1.0.8",
+  "main": "dist/index.js",
+  "private": false,
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "node_modules/.bin/rimraf dist && rollup --config",
+    "test": "jest"
+  },
+  "files": [
+    "dist"
+  ],
+  "peerDependencies": {
+    "react": "*",
+    "react-dom": "*"
+  },
+  "dependencies": {
+    "react-icons": "^4.11.0"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.23.3",
+    "@babel/preset-react": "^7.23.3",
+    "@testing-library/react": "13.3.0",
+    "@types/jest": "^27.0.3",
+    "@types/react": "^17.0.14",
+    "jest": "^27.4.3",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.60.2",
+    "rollup-plugin-esbuild": "^6.1.0",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-sass": "^1.12.21",
+    "rollup-plugin-typescript2": "^0.31.1",
+    "sass": "^1.69.5",
+    "ts-jest": "^27.1.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.5.2"
+  },
+  "description": "Simple, responsible easy to use react pagination component",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rasel-mahmud-dev/rsl-pagination"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "pagination",
+    "webpack",
+    "vite",
+    "rasel-mahmud-dev",
+    "rasel mahmud dev"
+  ],
+  "author": "Rasel mahmud (https://github.com/rasel-mahmud-dev)",
+  "homepage": "https://github.com/rasel-mahmud-dev/rsl-pagination",
+  "license": "MIT"
+}
