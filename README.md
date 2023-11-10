@@ -99,6 +99,8 @@ export default function Index() {
     );
 }
 ```
+### JSON Data file
+[data.json](https://raw.githubusercontent.com/rasel-mahmud-dev/rsl-pagination/main/example/src/data.json)
 
 Check Example [Live example]
 
