@@ -1,0 +1,30 @@
+{
+  "name": "example-react-app",
+  "private": true,
+  "version": "0.9.6",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --max-warnings 0"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react23": "^1.0.10",
+    "rsl-pagination": "^1.0.10"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.25",
+    "@types/react-dom": "^18.0.9",
+    "@vitejs/plugin-react": "^4.0.4",
+    "eslint": "^8.10.0",
+    "vite": "^4.4.8",
+    "vite-plugin-eslint": "^1.8.1"
+  },
+  "eslintConfig": {
+    "extends": [
+      "../../.eslintrc.js"
+    ]
+  }
+}

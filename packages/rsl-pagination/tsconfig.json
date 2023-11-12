@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "useDefineForClassFields": true,
+      "module": "ESNext",
+      "lib": ["ESNext", "DOM"],
+      "moduleResolution": "Node",
+      "jsx": "react-jsx",
+      "strict": true,
+      "sourceMap": true,
+      "resolveJsonModule": true,
+      "esModuleInterop": true,
+      "noEmit": false,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "declarationDir": "dist",
+      "composite": true,
+      "skipLibCheck": true,
+      "declaration": true, // Enable declaration file (.d.ts) generation
+      "outDir": "./dist",  // Output directory for transpiled JavaScript and declaration files,
+      "rootDir": "./src"
+    },
+    "include": ["src/**/*.ts", "src/**/*.tsx"],
+    "exclude": ["node_modules"]
+  }
