@@ -47,7 +47,9 @@ export default function Index() {
     }
 
     useEffect(() => {
-        fetchPosts(state.page, state.pageSize);
+        // setTimeout(()=>{
+        //     fetchPosts(state.page, state.pageSize);
+        // }, 1000)
     }, [state.page]);
 
     function fetchPosts(page: number, pageSize: number) {

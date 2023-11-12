@@ -3,7 +3,7 @@ import {VscChevronLeft, VscChevronRight} from "react-icons/vsc";
 
 import "./style.scss"
 
-interface PaginationProps {
+export interface PaginationProps {
     perPageRow: number,
     totalItem: number,
     currentPage: number
@@ -48,7 +48,9 @@ const RslPagination: FC<PaginationProps> = (props) => {
 
 
     useEffect(() => {
-        calcPaginationView(totalItem, state.perPageRow)
+        if(totalItem) {
+            calcPaginationView(totalItem, state.perPageRow)
+        }
     }, [totalItem, perPageRow])
 
 
@@ -243,16 +245,20 @@ const RslPagination: FC<PaginationProps> = (props) => {
         })
     }
 
+    function isDisabled() {
+        return props.totalItem <= 0
+    }
+
     return (
         <div className={`${className ?? ""} rs-pagination`}>
             <div className="column-gap-2">
-                <span className="pagination-end-start-button" onClick={() => handlePrev(1)}>Start</span>
+                <span className="pagination-end-start-button" onClick={() => !isDisabled() && handlePrev(1)}>Start</span>
                 <span>|</span>
             </div>
 
             <div className="">
                 <button className={`paginationArrow ${state.currentPage === 1 ? "disable-paginationArrow" : ""}`}
-                        onClick={() => handlePrev(Number(state.currentPage - 1))}>
+                        onClick={() =>!isDisabled() && handlePrev(Number(state.currentPage - 1))}>
                     <VscChevronLeft/>
                     <span>Previous</span>
                 </button>
@@ -260,7 +266,7 @@ const RslPagination: FC<PaginationProps> = (props) => {
                 <div className="pagination-items">
                     {state.showPageItems.length > 0 ? state.showPageItems.map((pageNumber) => (
                         <div key={pageNumber}
-                             onClick={() => changePage(Number(pageNumber))}
+                             onClick={() => !isDisabled() && changePage(Number(pageNumber))}
                              className={`pagination-item ${pageNumber === state.currentPage ? "active" : ""}`}>
                             {pageNumber}
                         </div>
@@ -274,7 +280,7 @@ const RslPagination: FC<PaginationProps> = (props) => {
 
                 <button
                     className={`paginationArrow ${(state.currentPage === state.totalPage) ? "disable-paginationArrow" : ""}`}
-                    onClick={() => handleNext(Number(state.currentPage + 1))}>
+                    onClick={() => !isDisabled() && handleNext(Number(state.currentPage + 1))}>
                     <span>Next</span>
                     <VscChevronRight/>
                 </button>
@@ -283,7 +289,7 @@ const RslPagination: FC<PaginationProps> = (props) => {
             <div>
                 <span>|</span>
                 <span className="pagination-end-start-button"
-                      onClick={() => changePage(state.totalPage)}>End</span>
+                      onClick={() => !isDisabled() && changePage(state.totalPage)}>End</span>
             </div>
 
             <div className="page-of">

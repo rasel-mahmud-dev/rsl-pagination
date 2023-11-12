@@ -17,7 +17,8 @@
   },
   "scripts": {
     "dev": "cd examples/react-app && npm run dev",
-    "build": "cd packages/rsl-pagination && npm run build"
+    "build": "cd packages/rsl-pagination && npm run build",
+    "deploy": "cd packages/rsl-pagination && npm publish"
   },
   "description": "Simple, responsible easy to use react pagination component",
   "repository": {

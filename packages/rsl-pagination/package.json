@@ -1,7 +1,6 @@
 {
   "name": "rsl-pagination",
-  "version": "1.0.10",
-  "description": "",
+  "version": "2.0.4",
   "files": [
     "dist",
     "src",
@@ -13,8 +12,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "npx webpack"
   },
-  "author": "",
-  "license": "ISC",
   "peerDependencies": {
     "react": "^18.0.0",
     "react-icons": "^4.11.0"
@@ -37,5 +34,24 @@
     "typescript": "^5.2.2",
     "webpack": "^5.89.0",
     "webpack-cli": "^5.1.4"
-  }
+  },
+  "description": "Simple, responsible easy to use react pagination component",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rasel-mahmud-dev/rsl-pagination"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "pagination",
+    "rs-pagination",
+    "rsl-pagination",
+    "webpack",
+    "vite",
+    "rasel-mahmud-dev",
+    "rasel mahmud dev"
+  ],
+  "author": "Rasel mahmud (https://github.com/rasel-mahmud-dev)",
+  "homepage": "https://github.com/rasel-mahmud-dev/rsl-pagination",
+  "license": "MIT"
 }
