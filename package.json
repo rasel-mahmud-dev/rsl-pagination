@@ -1,0 +1,33 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/rsl-pagination",
+    "playgrounds/example"
+  ],
+  "devDependencies": {
+    "lerna": "^7.1.5"
+  },
+  "scripts": {
+    "dev": "cd playgrounds/example && npm run dev",
+    "build": "cd packages/rsl-pagination && npm run build",
+    "deploy": "cd packages/rsl-pagination && npm publish"
+  },
+  "description": "Simple, responsible easy to use react pagination component",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rasel-mahmud-dev/rsl-pagination"
+  },
+  "keywords": [
+    "react",
+    "reactjs",
+    "pagination",
+    "webpack",
+    "vite",
+    "rasel-mahmud-dev",
+    "rasel mahmud dev"
+  ],
+  "author": "Rasel mahmud (https://github.com/rasel-mahmud-dev)",
+  "homepage": "https://github.com/rasel-mahmud-dev/rsl-pagination",
+  "license": "MIT"
+}
